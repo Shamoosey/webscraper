@@ -17,7 +17,8 @@ export class WebScraper implements Scraper.IWebScraper {
     }
 
     public async Run(): Promise<void>{
-        this.PreformScrape(this._scraperMock.GetMemoryExpressMock())
+        // this.PreformScrape(this._scraperMock.GetMemoryExpressMock())
+        // this.PreformScrape(this._scraperMock.GetNewEggMock())
     }
 
     private async PreformScrape(config: Scraper.IScrapedWebsiteConfiguration):Promise<void>{
@@ -38,6 +39,7 @@ export class WebScraper implements Scraper.IWebScraper {
                     }
                 }
             }
+            console.log("****")
         }
     }
 }

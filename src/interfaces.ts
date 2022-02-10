@@ -11,6 +11,7 @@ export namespace Scraper {
 
     export interface IScraperMock {
         GetMemoryExpressMock(): IScrapedWebsiteConfiguration;
+        GetNewEggMock(): IScrapedWebsiteConfiguration;
     }
     export interface IScrapedWebsiteConfiguration {
         Url: string,

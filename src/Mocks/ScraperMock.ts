@@ -22,4 +22,28 @@ export class ScraperMock implements Scraper.IScraperMock{
             ]
         }
     }
+    public GetNewEggMock(): Scraper.IScrapedWebsiteConfiguration {
+        return {
+            Url: "https://www.newegg.ca/p/pl?PageSize=96&N=100007708%20601357282",
+            ItemBaseSelector: ".item-cells-wrap",
+            ItemBaseSubSelector: ".item-cell",
+            ItemSubSelectors: [
+                {
+                    Name:"GpuName",
+                    Selector: ".item-title",
+                    InnerText: true
+                },
+                {
+                    Name:"GpuPrice",
+                    Selector: ".price-current",
+                    InnerText: true
+                },
+                {
+                    Name:"GpuShippingPrice",
+                    Selector: ".price-ship",
+                    InnerText: true
+                }
+            ]
+        }
+    }
 }
