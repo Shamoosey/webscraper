@@ -3,11 +3,23 @@ import {inject, injectable} from "inversify";
 
 @injectable()
 export class ScraperMock implements Scraper.IScraperMock{
-    public GetMock(): Scraper.IScrapedWebsite {
+    public GetMock(): Scraper.IScrapedWebsiteConfiguration {
         return {
-            Url: "https://www.memoryexpress.com/Category/VideoCards?PageSize=120",
+            Url: "https://www.memoryexpress.com/Category/VideoCards?FilterID=a5802dd9-4178-dc7a-049e-e8f0a4932a24&InventoryType=InStock&Sort=Price&PageSize=120",
             ItemBaseSelector: ".c-shca-container",
-            ItemSubSelector: ".c-shca-icon-item .c-shca-icon-item__summary-list span"
+            ItemBaseSubSelector: ".c-shca-icon-item",
+            ItemSubSelectors: [
+                {
+                    Name:"GpuName",
+                    Selector: ".c-shca-icon-item__body-name a",
+                    InnerText: true
+                },
+                {
+                    Name:"GpuPrice",
+                    Selector: ".c-shca-icon-item__summary-regular span",
+                    InnerText: true
+                }
+            ]
         }
     }
 }

@@ -10,12 +10,19 @@ export namespace Scraper {
     }
 
     export interface IScraperMock {
-        GetMock(): IScrapedWebsite;
+        GetMock(): IScrapedWebsiteConfiguration;
     }
-
-    export interface IScrapedWebsite {
+    export interface IScrapedWebsiteConfiguration {
         Url: string,
         ItemBaseSelector: string,
-        ItemSubSelector: string
+        ItemBaseSubSelector: string,
+        ItemSubSelectors: ItemSubSelector []
+    }
+
+    export interface ItemSubSelector{
+        Name: string,
+        Selector: string,
+        Regex?: string,
+        InnerText?: boolean
     }
 }

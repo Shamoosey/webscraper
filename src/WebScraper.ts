@@ -1,6 +1,7 @@
 import {inject, injectable} from "inversify";
 import { Scraper } from "./interfaces";
 import cheerio from "cheerio"
+import { parse } from 'node-html-parser';
 
 @injectable()
 export class WebScraper implements Scraper.IWebScraper {
@@ -19,16 +20,24 @@ export class WebScraper implements Scraper.IWebScraper {
         this.PreformScrape(this._scraperMock.GetMock())
     }
 
-    private async PreformScrape(config: Scraper.IScrapedWebsite):Promise<void>{
+    private async PreformScrape(config: Scraper.IScrapedWebsiteConfiguration):Promise<void>{
         let browser = await this._browserHelper.GetBrowser();
         let page = await browser.newPage()
         await page.goto(config.Url, {waitUntil: `load`});
         let data = await page.$eval(config.ItemBaseSelector, el => el.innerHTML)
+        
+        let parsedHtml = parse(data)
+        let selectedItems = parsedHtml.querySelectorAll(config.ItemBaseSubSelector);
 
-        let $ = cheerio.load(data)
-        let items = $(config.ItemSubSelector)
-        items.each((i, el) => {
-            console.log(el)
-        })
+        for(let item of selectedItems){
+            for(let subSelector of config.ItemSubSelectors){
+                let el = item.querySelector(subSelector.Selector)
+                if(el){
+                    if(subSelector.InnerText){
+                        console.log(el.innerText.trim());
+                    }
+                }
+            }
+        }
     }
 }
