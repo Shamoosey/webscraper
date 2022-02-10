@@ -1,24 +1,34 @@
 import {inject, injectable} from "inversify";
 import { Scraper } from "./interfaces";
-import Puppeteer, { Browser } from "puppeteer";
+import cheerio from "cheerio"
 
 @injectable()
 export class WebScraper implements Scraper.IWebScraper {
-    constructor () {
+    private _browserHelper: Scraper.IBrowserHelper;
+    private _scraperMock: Scraper.IScraperMock;
+
+    constructor (
+        @inject("BrowserHelper") browserHelper: Scraper.IBrowserHelper,
+        @inject("ScraperMock") scraperMock: Scraper.IScraperMock
+    ) {
+        this._browserHelper = browserHelper;
+        this._scraperMock = scraperMock;
     }
-    
-    private url = ""
 
     public async Run(): Promise<void>{
-        let browser = await this.initPuppeteerBrowser();
-
-        let page = await browser.newPage()
-        await page.goto(this.url, {waitUntil: `load`});
-
+        this.PreformScrape(this._scraperMock.GetMock())
     }
 
+    private async PreformScrape(config: Scraper.IScrapedWebsite):Promise<void>{
+        let browser = await this._browserHelper.GetBrowser();
+        let page = await browser.newPage()
+        await page.goto(config.Url, {waitUntil: `load`});
+        let data = await page.$eval(config.ItemBaseSelector, el => el.innerHTML)
 
-    private async initPuppeteerBrowser(): Promise<Puppeteer.Browser> {
-        return await Puppeteer.launch({devtools: true});
+        let $ = cheerio.load(data)
+        let items = $(config.ItemSubSelector)
+        items.each((i, el) => {
+            console.log(el)
+        })
     }
 }
