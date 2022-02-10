@@ -17,7 +17,7 @@ export class WebScraper implements Scraper.IWebScraper {
     }
 
     public async Run(): Promise<void>{
-        this.PreformScrape(this._scraperMock.GetMock())
+        this.PreformScrape(this._scraperMock.GetMemoryExpressMock())
     }
 
     private async PreformScrape(config: Scraper.IScrapedWebsiteConfiguration):Promise<void>{

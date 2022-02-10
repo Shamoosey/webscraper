@@ -10,7 +10,7 @@ export namespace Scraper {
     }
 
     export interface IScraperMock {
-        GetMock(): IScrapedWebsiteConfiguration;
+        GetMemoryExpressMock(): IScrapedWebsiteConfiguration;
     }
     export interface IScrapedWebsiteConfiguration {
         Url: string,
