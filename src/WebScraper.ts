@@ -10,6 +10,8 @@ export class WebScraper implements Scraper.IWebScraper {
 
     private _cachedData: Scraper.IScrapedContext[]; 
 
+    private initialized = false;
+
     constructor (
         @inject("BrowserHelper") browserHelper: Scraper.IBrowserHelper,
         @inject("ScraperMock") scraperMock: Scraper.IScraperMock
@@ -21,14 +23,19 @@ export class WebScraper implements Scraper.IWebScraper {
     }
 
     public async Run(): Promise<void>{
+        await this.PreformScrape(this._scraperMock.GetMemoryExpressMock());
+        await this.PreformScrape(this._scraperMock.GetNewEggMock());
+        this.initialized = true;
+
         new CronJob('*/1 * * * *', async () => {
             try {
+                console.log(new Date())
                 await this.PreformScrape(this._scraperMock.GetMemoryExpressMock());
                 await this.PreformScrape(this._scraperMock.GetNewEggMock());
             } catch (e) {
                 console.log(e);
             }
-        }, undefined, true, "America/Winnipeg", undefined, true);
+        }, undefined, true, "America/Winnipeg", undefined, false);
         
     }
 
@@ -61,7 +68,12 @@ export class WebScraper implements Scraper.IWebScraper {
             }
             if(!this.CompareData(scrapedData, config.Name)){
                 //TO-DO: add function to notify with new data
-                newData.ScrapedData.set(scrapedData.ScrappedName, metaData);
+                if(this.initialized){
+                    newData.ScrapedData.set(scrapedData.ScrappedName, metaData);
+                    console.log("\nNew data on page!")
+                    console.log(scrapedData.ScrappedName)
+                    console.log(metaData)
+                }
             }
             data.ScrapedData.set(scrapedData.ScrappedName, metaData);
         }
@@ -74,6 +86,8 @@ export class WebScraper implements Scraper.IWebScraper {
         if(this._cachedData.length > 0){
             this._cachedData = this._cachedData.filter((x) => x.StoredScrapedData.ConfigName != config.Name); 
         }
+
+        page.close();
         this._cachedData.push(scrapedContext)
     }
 
