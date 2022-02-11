@@ -12,4 +12,9 @@ export class BrowserHelper implements Scraper.IBrowserHelper{
         }
         return this._browserInstance
     }
+
+    public async GetNewPage(): Promise<Puppeteer.Page> {
+        if(!this._browserInstance) await this.GetBrowser();
+        return await this._browserInstance.newPage();
+    }
 }

@@ -5,6 +5,7 @@ import {inject, injectable} from "inversify";
 export class ScraperMock implements Scraper.IScraperMock{
     public GetMemoryExpressMock(): Scraper.IScrapedWebsiteConfiguration {
         return {
+            Name: "Memory Express",
             Url: "https://www.memoryexpress.com/Category/VideoCards?FilterID=a5802dd9-4178-dc7a-049e-e8f0a4932a24&InventoryType=InStock&Sort=Price&PageSize=120",
             ItemBaseSelector: ".c-shca-container",
             ItemBaseSubSelector: ".c-shca-icon-item",
@@ -12,7 +13,8 @@ export class ScraperMock implements Scraper.IScraperMock{
                 {
                     Name:"GpuName",
                     Selector: ".c-shca-icon-item__body-name a",
-                    InnerText: true
+                    InnerText: true,
+                    IsKey: true
                 },
                 {
                     Name:"GpuPrice",
@@ -24,6 +26,7 @@ export class ScraperMock implements Scraper.IScraperMock{
     }
     public GetNewEggMock(): Scraper.IScrapedWebsiteConfiguration {
         return {
+            Name: "New Egg",
             Url: "https://www.newegg.ca/p/pl?PageSize=96&N=100007708%20601357282",
             ItemBaseSelector: ".item-cells-wrap",
             ItemBaseSubSelector: ".item-cell",
@@ -31,7 +34,8 @@ export class ScraperMock implements Scraper.IScraperMock{
                 {
                     Name:"GpuName",
                     Selector: ".item-title",
-                    InnerText: true
+                    InnerText: true,
+                    IsKey: true
                 },
                 {
                     Name:"GpuPrice",

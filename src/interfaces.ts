@@ -7,13 +7,31 @@ export namespace Scraper {
 
     export interface IBrowserHelper {
         GetBrowser(): Promise<Puppeteer.Browser>;
+        GetNewPage(): Promise<Puppeteer.Page>;
     }
 
     export interface IScraperMock {
         GetMemoryExpressMock(): IScrapedWebsiteConfiguration;
         GetNewEggMock(): IScrapedWebsiteConfiguration;
     }
+
+    export interface IScrapedContext {
+        Configuration: IScrapedWebsiteConfiguration,
+        StoredScrapedData: StoredScrapedData
+    }
+
+    export interface ScrapedData {
+        ScrappedName: string,
+        MetaData: Map<string, string> 
+    }
+
+    export interface StoredScrapedData {
+        ConfigName: string,
+        ScrapedData: Map<string ,Map<string, string>>
+    }
+
     export interface IScrapedWebsiteConfiguration {
+        Name: string,
         Url: string,
         ItemBaseSelector: string,
         ItemBaseSubSelector: string,
@@ -25,5 +43,6 @@ export namespace Scraper {
         Selector: string,
         Regex?: string,
         InnerText?: boolean
+        IsKey?: boolean
     }
 }
