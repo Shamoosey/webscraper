@@ -4,6 +4,8 @@ import DailyRotateFile from "winston-daily-rotate-file";
 
 const tsFormat = () => moment().format('YYYY-MM-DD hh:mm:ss').trim();
 
+const appName = "WebScraper"
+
 const fileTransport = new DailyRotateFile ({
     filename: "webscraper-%DATE%.log",
     datePattern: "YYYY-MM-DD-HH",
@@ -32,7 +34,7 @@ const logger = createLogger({
             level,
             message,
             ...meta
-        }) => `${timestamp} | ${level} | ${message} ${formatMeta(meta)}`)
+        }) => `${timestamp} | ${appName} | ${level} | ${message} ${formatMeta(meta)}`)
     )
 })
 
