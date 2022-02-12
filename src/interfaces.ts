@@ -7,7 +7,7 @@ export namespace Scraper {
 
     export interface IBrowserHelper {
         GetBrowser(): Promise<Puppeteer.Browser>;
-        GetNewPage(): Promise<Puppeteer.Page>;
+        GetNewPage(url?: string): Promise<Puppeteer.Page>;
     }
 
     export interface IScraperMock {

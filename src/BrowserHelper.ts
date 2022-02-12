@@ -23,9 +23,14 @@ export class BrowserHelper implements Scraper.IBrowserHelper{
         return this._browserInstance
     }
 
-    public async GetNewPage(): Promise<Puppeteer.Page> {
+    public async GetNewPage(url?: string): Promise<Puppeteer.Page> {
         if(!this._browserInstance) await this.GetBrowser();
-        this._logger.info("Creating new page")
-        return await this._browserInstance.newPage();
+        this._logger.info("Creating new browser page")
+        let page =  await this._browserInstance.newPage();
+        if(url){
+            this._logger.info(`Loading new page ${url}`)
+            await page.goto(url, {waitUntil: `load`});
+        }
+        return page;
     }
 }

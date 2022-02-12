@@ -42,13 +42,11 @@ export class WebScraper implements Scraper.IWebScraper {
     }
 
     private async PreformScrape(config: Scraper.IScrapedWebsiteConfiguration):Promise<void>{
-        this._logger.info(`Preforming scrape for config: ${config.Name}`)
+        this._logger.info(`Preforming scrape for config`, config)
         let data: Scraper.StoredScrapedData = {ConfigName: config.Name, ScrapedData: new Map<string, Map<string, string>>() }
         let newData: Scraper.StoredScrapedData = {ConfigName: config.Name, ScrapedData: new Map<string, Map<string, string>>() }
         
-        let page = await this._browserHelper.GetNewPage();
-        await page.goto(config.Url, {waitUntil: `load`});
-        this._logger.info(`Loaded new page: ${config.Url}`)
+        let page = await this._browserHelper.GetNewPage(config.Url);
         let parsedHtml = parse(await page.$eval(config.ItemBaseSelector, el => el.innerHTML))
         let selectedItems = parsedHtml.querySelectorAll(config.ItemBaseSubSelector);
 
