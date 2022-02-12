@@ -1,13 +1,23 @@
 import {inject, injectable} from "inversify";
 import Puppeteer from "puppeteer";
+import { Logger } from "winston";
 import { Scraper } from "./interfaces";
 
 @injectable()
 export class BrowserHelper implements Scraper.IBrowserHelper{
+    private _logger: Logger;
+
     private _browserInstance : Puppeteer.Browser;
+
+    constructor (
+        @inject("Logger") logger: Logger
+    ) {
+        this._logger = logger;
+    }
 
     public async GetBrowser(): Promise<Puppeteer.Browser> {
         if(!this._browserInstance){
+            this._logger.info("Creating browser instance")
             this._browserInstance = await Puppeteer.launch({devtools: true, headless:true});
         }
         return this._browserInstance
@@ -15,6 +25,7 @@ export class BrowserHelper implements Scraper.IBrowserHelper{
 
     public async GetNewPage(): Promise<Puppeteer.Page> {
         if(!this._browserInstance) await this.GetBrowser();
+        this._logger.info("Creating new page")
         return await this._browserInstance.newPage();
     }
 }
