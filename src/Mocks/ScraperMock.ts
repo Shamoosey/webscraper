@@ -50,4 +50,30 @@ export class ScraperMock implements Scraper.IScraperMock{
             ]
         }
     }
+    public GetKijijiTestMock(): Scraper.IScrapedWebsiteConfiguration {
+        return {
+            Name: "Kijiji",
+            Url: "https://www.kijiji.ca/b-winnipeg/l1700192",
+            ItemBaseSelector: ".container-results:nth-child(2)",
+            ItemBaseSubSelector: ".search-item",
+            ItemSubSelectors: [
+                {
+                    Name:"ListingName",
+                    Selector: ".info-container .title a",
+                    InnerText: true,
+                    IsKey: true
+                },
+                {
+                    Name:"Price",
+                    Selector: ".info-container .price",
+                    InnerText: true
+                },
+                {
+                    Name:"Description",
+                    Selector: ".info-container .description",
+                    InnerText: true
+                }
+            ]
+        }
+    }
 }

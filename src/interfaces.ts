@@ -13,6 +13,7 @@ export namespace Scraper {
     export interface IScraperMock {
         GetMemoryExpressMock(): IScrapedWebsiteConfiguration;
         GetNewEggMock(): IScrapedWebsiteConfiguration;
+        GetKijijiTestMock(): IScrapedWebsiteConfiguration;
     }
 
     export interface IScrapedContext {
