@@ -12,8 +12,6 @@ export class WebScraper implements Scraper.IWebScraper {
 
     private _cachedData: Scraper.IScrapedContext[]; 
 
-    private initialized = false;
-
     constructor (
         @inject("BrowserHelper") browserHelper: Scraper.IBrowserHelper,
         @inject("ScraperMock") scraperMock: Scraper.IScraperMock,
@@ -28,7 +26,6 @@ export class WebScraper implements Scraper.IWebScraper {
 
     public async Run(): Promise<void>{
         this._logger.info("**App Started**")
-        this.initialized = true;
 
         new CronJob('*/1 * * * *', async () => {
             try {
@@ -43,6 +40,9 @@ export class WebScraper implements Scraper.IWebScraper {
 
     private async PreformScrape(config: Scraper.IScrapedWebsiteConfiguration):Promise<void>{
         this._logger.info(`Preforming scrape for config`, config)
+        if(this._cachedData.find(x => x.StoredScrapedData.ConfigName == config.Name)){
+            this._logger.info(`Cached data size: ${this._cachedData.find(x => x.StoredScrapedData.ConfigName == config.Name).StoredScrapedData.ScrapedData.size}`)
+        }
         let data: Scraper.StoredScrapedData = {ConfigName: config.Name, ScrapedData: new Map<string, Map<string, string>>() }
         let newData: Scraper.StoredScrapedData = {ConfigName: config.Name, ScrapedData: new Map<string, Map<string, string>>() }
         
@@ -71,7 +71,9 @@ export class WebScraper implements Scraper.IWebScraper {
             if(!this.CompareData(scrapedData, config.Name)){
                 //TO-DO: add function to notify with new data
                 newData.ScrapedData.set(scrapedData.ScrappedName, metaData);
-                this._logger.info(`Adding new scrape to cached data: ${scrapedData.ScrappedName}`)
+                this._logger.info(`Adding new scrape to cache: ${scrapedData.ScrappedName}`)
+            } else {
+                this._logger.debug("No new data to add to cache")
             }
             data.ScrapedData.set(scrapedData.ScrappedName, metaData);
         }
@@ -88,6 +90,7 @@ export class WebScraper implements Scraper.IWebScraper {
         page.close();
         this._logger.info(`Scrap complete, pushing data to cache for config: ${config.Name}`)
         this._cachedData.push(scrapedContext)
+        this._logger.info(`New cached data size: ${this._cachedData.find(x => x.StoredScrapedData.ConfigName == config.Name).StoredScrapedData.ScrapedData.size}`)
     }
 
     private CompareData(scrapedData: Scraper.ScrapedData, configName:string): boolean {

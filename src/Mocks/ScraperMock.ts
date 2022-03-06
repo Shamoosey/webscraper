@@ -6,7 +6,7 @@ export class ScraperMock implements Scraper.IScraperMock{
     public GetMemoryExpressMock(): Scraper.IScrapedWebsiteConfiguration {
         return {
             Name: "Memory Express",
-            Url: "https://www.memoryexpress.com/Category/VideoCards?FilterID=a5802dd9-4178-dc7a-049e-e8f0a4932a24&InventoryType=InStock&Sort=Price&PageSize=120",
+            Url: "https://www.memoryexpress.com/Category/VideoCards?FilterID=a5802dd9-4178-dc7a-049e-e8f0a4932a24&InventoryType=InStock&Sort=Price&PageSize=120&Page=1",
             ItemBaseSelector: ".c-shca-container",
             ItemBaseSubSelector: ".c-shca-icon-item",
             ItemSubSelectors: [

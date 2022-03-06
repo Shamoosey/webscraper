@@ -11,6 +11,7 @@ export abstract class LogFactory {
         filename: "webscraper-%DATE%.log",
         datePattern: "YYYY-MM-DD-HH",
         dirname: "./logs",
+        maxSize: '200m',
         maxFiles: '7d'
     });
 

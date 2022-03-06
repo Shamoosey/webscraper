@@ -27,6 +27,7 @@ export class BrowserHelper implements Scraper.IBrowserHelper{
         if(!this._browserInstance) await this.GetBrowser();
         this._logger.info("Creating new browser page")
         let page =  await this._browserInstance.newPage();
+        page.setUserAgent("Mozilla/5.0 ... AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36")
         if(url){
             this._logger.info(`Loading new page ${url}`)
             await page.goto(url, {waitUntil: `load`});
