@@ -7,7 +7,7 @@ NPM Commands
 
 
 
-Example of a empty config used to pull data from a site
+Example of a empty config used to pull data from a site, see /src/Mocks/ScraperMock.ts for examples
 
 ```
 {
