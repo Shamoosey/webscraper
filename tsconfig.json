@@ -18,6 +18,7 @@
     ],
     "types": [
         "cheerio",
-        "node"
+        "node",
+        "fs-extra"
     ]
 }   

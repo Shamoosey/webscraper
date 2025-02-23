@@ -11,7 +11,7 @@ export class BrowserHelper implements Scraper.IBrowserHelper{
   private _browserInstance : Browser;
 
   constructor (
-    @inject("Logger") logger: Logger
+    @inject(Logger) logger: Logger
   ) {
     this._logger = logger;
     Puppeteer.use(StealthPlugin());
@@ -37,10 +37,7 @@ export class BrowserHelper implements Scraper.IBrowserHelper{
     this._logger.info("Creating new browser page")
     let page =  await this._browserInstance.newPage();
     
-    // page.setUserAgent("Mozilla/5.0 ... AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36")
-    await page.setUserAgent(
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    );
+    await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
 
     await page.setExtraHTTPHeaders({
       "Accept-Language": "en-US,en;q=0.9",
@@ -54,7 +51,7 @@ export class BrowserHelper implements Scraper.IBrowserHelper{
 
     if(url){
       this._logger.info(`Loading new page ${url}`)
-      await page.goto(url, {waitUntil: `networkidle2`});
+      await page.goto(url, {waitUntil: `networkidle0`});
     }
     return page;
   }

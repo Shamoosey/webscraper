@@ -1,0 +1,63 @@
+{
+  "configurations":[
+    {
+      "Name": "CannaCabana",
+      "Url": "https://cannacabana.com/",
+      "PreScrapeSteps": [
+        {
+          "ItemSelector": "#province-select",
+          "Action": "Select", 
+          "ActionData": "Manitoba"
+        },
+        {
+          "ItemSelector": "#store-select",
+          "Action": "Input",
+          "ActionData": "5786" 
+        },
+        {
+          "ItemSelector": "#yes",
+          "Action": "Click" 
+        },
+        {
+          "ItemSelector": "a.age-varified__button",
+          "Action": "Click" 
+        }
+      ],
+      "DataScrapeConfiguration": {
+        "ScrapeName": "Joints",
+        "Url": "https://cannacabana.com/collections/joints?sID=5786",
+        "ItemBaseSelector": "#product-grid",
+        "ItemBaseSubSelector": ".product-grid-item",
+        "NextPageSelector": ".pagination__item--next",
+        "ItemSubSelectors": [
+          {
+            "Name":"Vendor",
+            "Selector": ".product-vendor",
+            "InnerText": true
+          },
+          {
+            "Name":"Product Name",
+            "Selector": ".full-unstyled-link",
+            "InnerText": true,
+            "IsKey": true
+          },
+          {
+            "Name":"Price",
+            "Selector": ".js-market-table-price",
+            "InnerText": true
+          },
+          {
+            "Name":"Member Price",
+            "Selector": ".js-purchase-table-price",
+            "InnerText": true
+          },
+          {
+            "Name":"Elite Price",
+            "Selector": ".js-market-table-price",
+            "InnerText": true
+          }
+        ]
+      }
+    }
+  ]
+}

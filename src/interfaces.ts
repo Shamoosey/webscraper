@@ -1,4 +1,5 @@
 import { Browser, Page } from "puppeteer";
+import { ConfigService } from "./ConfigService";
 
 export namespace Scraper {
   export interface IWebScraper {
@@ -10,38 +11,57 @@ export namespace Scraper {
     GetNewPage(url?: string): Promise<Page>;
   }
 
-  export interface IScraperMock {
-    GetScraperMocks(): IScrapedWebsiteConfiguration[];
+  export interface IConfigService {
+    appSettings: AppSettings
+    GetScrapeConfigurations(): Promise<Configuration.ScrapeConfiguration[]>
   }
 
-  export interface IScrapedContext {
-    Configuration: IScrapedWebsiteConfiguration,
-    StoredScrapedData: StoredScrapedData
+  export interface AppSettings {
+    env: string
+    configPath: string,
+    outputPath: string
   }
-
-  export interface ScrapedData {
-    ScrappedName: string,
-    MetaData: Map<string, string> 
-  }
-
+  
   export interface StoredScrapedData {
-    ConfigName: string,
+    ConfigKey: string,
     ScrapedData: Map<string ,Map<string, string>>
   }
 
-  export interface IScrapedWebsiteConfiguration {
-    Name: string,
-    Url: string,
-    ItemBaseSelector: string,
-    ItemBaseSubSelector: string,
-    ItemSubSelectors: ItemSubSelector [],
-  }
+  export namespace Configuration {
+    export interface JsonScrapeConfiguration {
+      configurations: ScrapeConfiguration[]
+    }
 
-  export interface ItemSubSelector{
-    Name: string,
-    Selector: string,
-    Regex?: string,
-    InnerText?: boolean
-    IsKey?: boolean
+    export interface ScrapeConfiguration {
+      Name: string,
+      Url: string,
+      PreScrapeSteps: PreScrapeStep[], //pre-scrape steps IE: bypass age verification / login pages
+      DataScrapeConfiguration: ScrapeDataConfiguration
+    }
+
+    export interface PreScrapeStep {
+      ItemSelector: string,
+      Action: ActionType //Action to preform
+      ActionData?: string //Url to Navigate, Text to input
+    }
+
+    export type ActionType = "Click" | "Input" | "Select";
+
+    export interface ScrapeDataConfiguration {
+      ScrapeName: string
+      Url: string,
+      ItemBaseSelector: string,
+      ItemBaseSubSelector: string,
+      NextPageSelector: string
+      ItemSubSelectors: ItemSubSelector [],
+    }
+  
+    export interface ItemSubSelector{
+      Name: string,
+      Selector: string,
+      Regex?: string,
+      InnerText?: boolean
+      IsKey?: boolean
+    }
   }
 }

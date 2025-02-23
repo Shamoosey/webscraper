@@ -11,29 +11,21 @@ export abstract class LogFactory {
     filename: "webscraper-%DATE%.log",
     datePattern: "YYYY-MM-DD-HH",
     dirname: "./logs",
-    maxSize: '200m',
     maxFiles: '7d'
   });
-
-  private static httpTransport = new Http({
-    host: "192.168.0.123",
-    port: 12201 ,
-    path: "/gelf",
-    format: this.getLogformat()
-  })
 
   public static GetNewLogger(): Logger {
     let logger = createLogger({
       level: this.logLevel,
       transports: [
         this.fileTransport,
-        this.httpTransport,
       ],
       format: this.getLogformat()
     })
     
     if(process.env.NODE_ENV.toLowerCase() == "dev"){
       logger.add(new transports.Console())
+      logger.level = "debug"
     }
     return logger;
   }
